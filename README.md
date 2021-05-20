@@ -1,6 +1,6 @@
 # Project #2 Group 210 - Youtube
 
-<img src="youtube/static/img/logo.png" alt="overview" width="120"/>
+<img src="static/img/logo.svg" alt="overview" width="120"/>
 
 ## Table of Contents
 
