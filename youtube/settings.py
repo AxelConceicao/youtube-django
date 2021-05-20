@@ -55,7 +55,7 @@ ALLOWED_HOSTS = [
     'containers.computing.dcu.ie',
     '127.0.0.1',
     '0.0.0.0',
-    'guarded-peak-26326.herokuapp.com'
+    'youtube-django.herokuapp.com'
 ]
 
 AUTH_USER_MODEL = 'authentication.User' 
