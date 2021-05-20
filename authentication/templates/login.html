@@ -32,5 +32,9 @@ Sign In - Youtube
     </form>
     <div class="register-instead">Don't have an account? <a href="{% url 'authentication:register' %}">Create an account</a>.</div>
   </div>
+  <script>
+    document.getElementById('id_username').value = 'demo'
+    document.getElementById('id_password').value = 'password_demo'
+  </script>
 </div>
 {% endblock main_content %}
