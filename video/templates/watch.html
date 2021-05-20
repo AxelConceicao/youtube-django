@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{% if error %}
+Video unavailable - Youtube
+{% else %}
+{{ video.title }} - Youtube
+{% endif %}
+{% endblock title %}
+
+{% block main_content %}
+{% if not error %}
+<div id="watch-headline">
+  <h1 class="watch-headline-title">
+    {{ video.title }}
+  </h1>
+</div>
+{% endif %}
+<div id="watch-container">
+  <div id="watch-panel">
+    <div id="watch-player">
+      {% if error %}
+      <img src="{% get_media_prefix %}thumbnail/unavailable.jpg">
+      </img>
+      {% else %}
+      <video controls autoplay>
+        <source src="{{ video.file.url }}" type="video/mp4">
+      </video>
+      {% endif %}
+    </div>
+    <div id="alert-box"></div>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      <strong>This video is not available. Sorry about that.</strong>
+    </div>
+    {% else %}
+    <div id="watch-description">
+      <div id="watch-description-clip">
+        <div id="watch-uploader-info">
+          Uploaded by <a class="author" rel="author" href="{% url 'video:channel' video.author %}">{{ video.author }}</a>
+          on {{ video.created_at|date:"M d, Y" }}
+        </div>
+        <div class="watch-description-text">{{ video.description }}</div>
+      </div>
+      <div id="watch-description-extra">
+        <div id="watch-views">
+          <strong>
+            <span class="format-number">{{ video.views }}</span>
+            <span class="views">views</span>
+          </strong>
+        </div>
+        <div class="progress" style="height: 5px;margin: 5px 0 3px;">
+          <div id="likes-bar" class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50"
+            aria-valuemin="0" aria-valuemax="100"></div>
+          <div id="dislikes-bar" class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="50"
+            aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div id="watch-likes-dislikes">
+          <span class="format-number">{{ video.likes.count }}</span> likes,
+          <span class="format-number">{{ video.dislikes.count }}</span> dislikes
+        </div>
+        <div id="watch-like-dislike">
+          <form action="{% url 'video:like' video.id %}" method="POST">
+            {% csrf_token %}
+            <button class="watch-like-btn" type="submit"><i class="fa fa-thumbs-up"></i></button>
+          </form>
+          <form action="{% url 'video:dislike' video.id %}" method="POST">
+            {% csrf_token %}
+            <button class="watch-dislike-btn" type="submit"><i class="fa fa-thumbs-down"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div id="watch-sidebar">
+    <h4 class="sidebar-title">Suggestions</h4>
+    <ul id="watch-related">
+      {% for sugg in suggestions %}
+      {% if video.id != sugg.id %}
+      <li class="video-list-item">
+        <a class="video-list-item-link" href="{% url 'video:watch' sugg.id %}">
+          <div class="watch-video-thumb">
+            <div class="watch-clip">
+              <img src="{{ sugg.thumbnail.url }}">
+            </div>
+          </div>
+          <div class="watch-video-info">
+            <span class="video-title">{{ sugg.title }}</span>
+            <span class="video-author">by {{ sugg.author }}</span>
+            <span class="video-views">
+              <span class="format-number">{{ sugg.views }}</span> views
+            </span>
+          </div>
+        </a>
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  <script>
+    titles = document.getElementsByClassName('video-title')
+    for (var element of titles) {
+      if (element.innerHTML.length > 50) {
+        element.innerHTML = element.innerHTML.substring(0, 50) + '...'
+      }
+    }
+
+    viewsCount = document.getElementsByClassName('format-number')
+    for (var element of viewsCount) {
+      element.innerHTML = parseInt(element.innerHTML).toLocaleString()
+    }
+    
+    if ('{{ liked }}' == 'True') {
+      likebtn = document.getElementsByClassName('watch-like-btn')[0]
+      likebtn.style['color'] = '#28a745'
+    }
+    if ('{{ disliked }}' == 'True') {
+      dislikebtn = document.getElementsByClassName('watch-dislike-btn')[0]
+      dislikebtn.style['color'] = '#dc3545'
+    }
+
+    var likes = parseInt('{{ video.likes.count }}')
+    var dislikes = parseInt('{{ video.dislikes.count }}')
+    var total = likes + dislikes
+    document.getElementById("likes-bar").style["width"] = parseInt(likes / total * 100) + '%';
+    document.getElementById("dislikes-bar").style["width"] = parseInt(dislikes / total * 100) + '%';
+  </script>
+</div>
+{% endblock main_content %}

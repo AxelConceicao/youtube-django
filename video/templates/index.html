@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Browse - Youtube
+{% endblock title %}
+
+{% block main_content %}
+<h3 class="page-title">Most Viewed Videos</h3>
+<div id="container">
+  <div class="video-module">
+    {% for video in videos %}
+    <div class="video-cell">
+      <a href="{% url 'video:watch' video.id %}">
+        <div class="video-thumb">
+          <div class="clip">
+            <img src="{{ video.thumbnail.url }}">
+          </div>
+        </div>
+      </a>
+      <div class="video-main-content">
+        <div class="video-short-title">
+          <a class="video-title" href="{% url 'video:watch' video.id %}" title="{{ video.title }}">
+            {{ video.title }}
+          </a>
+        </div>
+        <div class="video-facets">
+          <span class="video-username">
+            by <a title="{{ video.author }}" href="{% url 'video:channel' video.author %}">{{ video.author }}</a>
+          </span>
+          <span class="video-views">
+            <span class="format-number" href="">{{ video.views }}</span> views
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <script>
+    titles = document.getElementsByClassName('video-title')
+    for (var element of titles) {
+      if (element.title.length > 35) {
+        element.innerHTML = element.title.substring(0, 35) + '...'
+      }
+    }
+    viewsCount = document.getElementsByClassName('format-number')
+    for (var element of viewsCount) {
+      element.innerHTML = parseInt(element.innerHTML).toLocaleString()
+    }
+  </script>
+</div>
+{% endblock main_content %}
