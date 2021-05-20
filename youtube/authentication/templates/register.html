@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Sign Up - Youtube
+{% endblock title %}
+
+{% block main_content %}
+<h3 class="page-title">Get started with your account</h3>
+<div id="container">
+  {% load crispy_forms_tags %}
+  <div class="register-box">
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <form method="POST">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="sign-up-btn">
+        <button class="btn btn-primary" type="submit">Sign Up</button>
+      </div>
+    </form>
+    <div class="login-instead">If you already have an account, <a href="{% url 'authentication:login' %}">login</a> instead.</div>
+  </div>
+</div>
+{% endblock main_content %}

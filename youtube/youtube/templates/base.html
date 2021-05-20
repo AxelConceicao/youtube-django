@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %} Untitled Document {% endblock title %}</title>
+  <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/content.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/global.css' %}" rel="stylesheet" type="text/css" />
+  <link rel="shortcut icon" type="image/x-icon" href="{%  static 'img/favicon.ico' %}" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+    integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+    crossorigin="anonymous"></script>
+  <div id="page">
+    <div id="masthead-container">
+      <div id="masthead" class="row">
+        <div id="logo">
+          <a href="{% url 'video:index' %}">
+            <img src="{% static 'img/logo.png' %}" alt="" />
+          </a>
+        </div>
+        <div id="masthead-search" class="row">
+          <form id="search" action="{% url 'video:index' %}" method="get">
+            <input class="form-control text" type="text" name="search" />
+            <button type="submit" value="Go" class="btn btn-outline-primary submit">Search</button>
+          </form>
+        </div>
+        <div id="masthead-sections">
+          <div>
+            <a href="{% url 'video:upload' %}">Upload</a>
+          </div>
+          {% if user.is_authenticated %}
+          <div>
+            Hi, <a class="hi-username" href="">{{ user.username }}</a>
+            <a class="sign-out" href="{% url 'authentication:logout' %}">Sign Out</a>
+          </div>
+          {% else %}
+          <div>
+            <a class="create-account" href="{% url 'authentication:register' %}">Create Account</a>
+            <a class="sign-in" href="{% url 'authentication:login' %}">Sign In</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div id="content-container">
+      <div id="content">
+        {% block main_content %}
+        {% endblock main_content %}
+      </div>
+    </div>
+    <div id="footer-container">
+      <div id="footer">
+        <span>Copyright &copy; 2021 Leonardo Shehu, Axel Conceicao</span>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

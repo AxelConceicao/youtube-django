@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Upload - Youtube
+{% endblock title %}
+
+{% block main_content %}
+<h3 class="page-title">Video File Upload</h3>
+<div id="container">
+  {% load crispy_forms_tags %}
+  <div class="upload-box">
+    {% if user.is_authenticated %}
+    {% else %}
+    <div class="alert alert-danger">
+      <strong>You must <a href="{% url 'authentication:login' %}">sign in</a> to upload a video on
+        YouTube.</strong>
+    </div>
+    {% endif %}
+    <div id="alert-box"></div>
+    <img id="thumbnail-preview">
+    <div id="video-preview"></div>
+    <form enctype="multipart/form-data" onsubmit="onFormSubmit(event)">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="form-group" id="progress_div" style="display: none;">
+        <div class="progress" style="height: 20px; font-size: 13px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress_bar" role="progressbar"
+            style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
+          </div>
+        </div>
+      </div>
+      <div class="submit-btn">
+        {% if user.is_authenticated %}
+        <button class="btn btn-primary" type="submit">Submit</button>
+        {% else %}
+        <button class="btn btn-primary disabled" type="submit">Submit</button>
+        {% endif %}
+      </div>
+    </form>
+    <script>
+      function isFileGood(alertbox, file) {
+        const MAX_FILE_SIZE = 10 * 1024 * 1024
+        if (!['mp4', 'webm'].includes(file.name.split('.').pop())) {
+          alertbox.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            <strong>This file format is not supported (mp4, webm)</strong>
+          </div>
+          `
+          return false
+        }
+        if (file.size > MAX_FILE_SIZE) {
+          alertbox.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            <strong>The specified file likely exceeded the maximum file size (10 MB)</strong>
+          </div>
+          `
+          return false
+        }
+        alertbox.innerHTML = ''
+        return true
+      }
+      function generateThumbnail(alertbox, data) {
+        const video = document.createElement('video')
+        video.src = data.url
+        video.addEventListener('loadeddata', function () {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+          const dataURL = canvas.toDataURL('image/jpeg');
+          axios.request({
+            method: "POST",
+            url: "{% url 'video:save_thumbnail' %}",
+            data: {
+              id: data.id,
+              thumbnail: dataURL,
+            },
+            headers: {
+              "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value,
+              "content-type": "application/json",
+            },
+          }).then((response) => {
+            console.log(response)
+            window.location.replace("{% url 'video:watch' %}" + data.id);
+          }).catch((error) => {
+            console.log(error);
+            alertbox.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+              <strong>Something went wrong.</strong>
+            </div>
+            `
+          })
+        })
+      }
+      function onFormSubmit(event) {
+        event.preventDefault();
+
+        const alertbox = document.getElementById("alert-box")
+        const videopreview = document.getElementById("video-preview")
+        const file = document.getElementById("id_file").files[0]
+        if (!isFileGood(alertbox, file)) return
+
+        var formData = new FormData();
+        formData.append("csrfmiddlewaretoken", document.getElementsByName("csrfmiddlewaretoken")[0].value);
+        formData.append("file", file);
+        formData.append("title", document.getElementById("id_title").value);
+        formData.append("description", document.getElementById("id_description").value);
+
+        axios.request({
+          method: "POST",
+          url: "{% url 'video:upload' %}",
+          data: formData,
+          headers: {
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value,
+            "content-type": "multipart/form-data",
+          },
+          onUploadProgress: (p) => {
+            console.log(p);
+            var percentage = (p.loaded / p.total * 100 | 0);
+            document.getElementById("progress_div").style["display"] = "block";
+            document.getElementById("progress_bar").style["width"] = "" + percentage + "%";
+            document.getElementById("progress_bar").innerHTML = "" + percentage + "%";
+          }
+        }).then((response) => {
+          console.log(response)
+          alertbox.innerHTML = `
+          <div class="alert alert-success" role="alert">
+            <strong>Video uploaded successfully. Redirection in few seconds.</strong>
+          </div>
+          `
+          generateThumbnail(alertbox, response.data)
+        }).catch((error) => {
+          console.log(error);
+          alertbox.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            <strong>Something went wrong.</strong>
+          </div>
+          `
+        })
+      }
+    </script>
+  </div>
+</div>
+{% endblock main_content %}

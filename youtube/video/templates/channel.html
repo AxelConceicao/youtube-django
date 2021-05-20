@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{% if error %}
+Channel unavailable - Youtube
+{% else %}
+{{ channel.username }} - Youtube
+{% endif %}
+{% endblock title %}
+
+{% block main_content %}
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  <strong>Cannot find the user '{{ error }}'.</strong>
+</div>
+{% else %}
+<h3 class="page-title">{{ channel.username }}
+  <div id="channel-subscribe">
+    {% if user.username != channel.username %}
+    {% if subscribed %}
+    <form action="{% url 'video:unsubscribe' channel.username %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger btn-sm">Unsubscribe</button>
+    </form>
+    {% else %}
+    <form action="{% url 'video:subscribe' channel.username %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success btn-sm">Subscribe</button>
+    </form>
+    {% endif %}
+    &nbsp;
+    {% endif %}
+    <div>
+      <span class="format-number">{{ channel.subscribers.count }}</span> subscribers
+    </div>
+  </div>
+</h3>
+<div id="container">
+  <div class="video-module">
+    {% for video in videos %}
+    {% if video.author.username == channel.username %}
+    <div class="video-cell">
+      <a href="{% url 'video:watch' video.id %}">
+        <div class="video-thumb">
+          <div class="clip">
+            <img src="{{ video.thumbnail.url }}">
+          </div>
+        </div>
+      </a>
+      <div class="video-main-content">
+        <div class="video-short-title">
+          <a class="video-title" href="{% url 'video:watch' video.id %}" title="{{ video.title }}">
+            {{ video.title }}
+          </a>
+        </div>
+        <div class="video-facets">
+          <span class="video-views">
+            <span class="format-number" href="">{{ video.views }}</span> views
+          </span>
+          <div id="watch-likes-dislikes">
+            <span class="format-number">{{ video.likes.count }}</span> likes,
+            <span class="format-number">{{ video.dislikes.count }}</span> dislikes
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+<script>
+  titles = document.getElementsByClassName('video-title')
+  for (var element of titles) {
+    if (element.title.length > 35) {
+      element.innerHTML = element.title.substring(0, 35) + '...'
+    }
+  }
+  viewsCount = document.getElementsByClassName('format-number')
+  for (var element of viewsCount) {
+    element.innerHTML = parseInt(element.innerHTML).toLocaleString()
+  }
+</script>
+{% endblock main_content %}

@@ -1,0 +1,319 @@
+.page-title {
+  font-size: 19px;
+  font-weight: bold;
+  padding: 5px 0;
+  border-bottom: 1px solid #999;
+}
+
+#content #container {
+  padding: 30px 5px;
+}
+
+.upload-box,
+.login-box,
+.register-box {
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.upload-box {
+  width: 800px;
+}
+
+.register-box {
+  width: 500px;
+}
+
+.login-box {
+  width: 400px;
+}
+
+.upload-box button,
+.login-box button,
+.register-box button {
+  width: 100px;
+}
+
+.submit-btn,
+.sign-in-btn,
+.sign-up-btn {
+  text-align: center;
+}
+
+.register-instead,
+.login-instead {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.login-box form .alert,
+.register-box form .alert {
+  display: none;
+}
+
+#container form input {
+  height: 28px !important;
+}
+
+.upload-box form {
+  margin-top: -10px;
+}
+
+#container .disabled {
+  cursor: not-allowed;
+}
+
+.video-module {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.video-cell {
+  /* height: 170px; */
+  margin-bottom: 15px;
+}
+
+.video-main-content {
+  margin-top: 8px;
+}
+
+.video-short-title {
+  line-height: normal;
+  width: 170px;
+  padding: 0 5px;
+}
+
+.video-facets {
+  font-size: 12px;
+  color: #666;
+  padding: 0 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-thumb {
+  width: 180px;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.clip {
+  height: 100px;
+  background-color: black;
+  text-align: center;
+}
+
+.video-thumb img {
+  height: 100%;
+  max-width: 100%;
+}
+
+#watch-container,
+#watch-headline {
+  width: 970px;
+  margin: 0 auto;
+}
+
+#watch-container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 30px;
+}
+
+.watch-headline-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 0 5px;
+}
+
+#watch-panel {
+  width: 640px;
+}
+
+#watch-panel .alert {
+  margin-bottom: 10px;
+}
+
+#watch-player {
+  width: 640px;
+  height: 360px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#watch-player video {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  /* border: 1px solid #ccc; */
+}
+
+#watch-sidebar {
+  width: 330px;
+  padding-left: 20px;
+}
+
+.video-unavailable {
+  color: white;
+}
+
+#watch-uploader-info {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+#watch-related {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.video-list-item {
+  clear: both;
+  margin-bottom: 5px;
+}
+
+a.video-list-item-link {
+  padding: 5px;
+  display: block;
+  overflow: hidden;
+  color: #000;
+  zoom: 1;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+}
+
+.watch-video-thumb {
+  width: 120px;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.watch-video-thumb img {
+  height: 100%;
+  max-width: 100%;
+}
+
+.watch-clip {
+  height: 67px;
+  background-color: black;
+  text-align: center;
+}
+
+.watch-video-info {
+  width: 180px;
+  padding-left: 7.5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.watch-video-info .video-title {
+  font-weight: normal;
+  line-height: 1.2;
+  color: #03c;
+}
+.watch-video-info .video-views,
+.watch-video-info .video-author {
+  font-size: 11px;
+  color: #666;
+}
+
+a.video-list-item-link:hover {
+  background: #d1e1fa;
+  text-decoration: none;
+}
+
+a.video-list-item-link:hover .video-title {
+  text-decoration: underline;
+}
+
+.sidebar-title {
+  font-size: 14px;
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ccc;
+}
+
+#watch-views,
+#watch-description-extra {
+  width: 165px;
+}
+
+#watch-views {
+  text-align: center;
+  font-size: 22px;
+}
+
+#watch-views .views {
+  font-size: 13px;
+  font-style: italic;
+  font-weight: normal;
+}
+
+#watch-subscribe,
+#watch-description-clip {
+  width: 450px;
+}
+
+#watch-description {
+  display: flex;
+  justify-content: space-between;
+}
+
+#watch-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  height: 27px;
+}
+
+#watch-likes-dislikes {
+  color: #666;
+  font-size: 11px;
+}
+
+#channel-subscribe {
+  color: #666;
+  font-size: 11px;
+  display: flex;
+  flex-direction: row;
+  line-height: 25px;
+}
+
+#watch-like-dislike {
+  display: flex;
+  justify-content: space-around;
+}
+
+.watch-like-btn,
+.watch-dislike-btn {
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.watch-like-btn:focus,
+.watch-dislike-btn:focus {
+  outline: none;
+}
+
+.watch-like-btn:hover {
+  color: #28a745;
+}
+
+.watch-dislike-btn:hover {
+  color: #dc3545;
+}
