@@ -65,8 +65,7 @@ pip3 install django-crispy-forms==1.11.2
 git clone https://gitlab.computing.dcu.ie/conceia2/2021-ca229-project02.git
 ```
 For **DCU containers**
-
-2. Create a file named *user.txt* in *youtube/* that contains your DCU username
+2. Create a file named *user.txt* in *youtube/* that contains your DCU username or run this command **from root repo**
 ```sh
 echo -n "<username>" > youtube/user.txt
 ```

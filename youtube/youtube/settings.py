@@ -27,11 +27,33 @@ SECRET_KEY = '@oq^pxru&%$!4myq3ek%pquikp0%iyl12y)+r6bx4**q52+4mc'
 DEBUG = True
 
 USE_X_FORWARDED_HOST = True
-with open(BASE_DIR / 'user.txt') as f:
-    FORCE_SCRIPT_NAME = '/' + f.read()
+
+FORCE_SCRIPT_NAME = ''
+
+STATIC_SUFFIX = '/static/'
+MEDIA_SUFFIX = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+try:
+    # DCU CONTAINER SETTINGS
+    # user.txt exist = DCU container mode
+    with open(BASE_DIR / 'user.txt') as f:
+        FORCE_SCRIPT_NAME = '/' + f.read()
+    STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+    print('DCU container settings loaded')
+except:
+    # DEFAULT SETTINGS
+    print('No user.txt file detected')
+    STATIC_ROOT = ''
+    STATICFILES_DIRS = (os.path.join('static'),)
+    print('Default settings loaded')
+
+STATIC_URL = FORCE_SCRIPT_NAME + STATIC_SUFFIX
+MEDIA_URL = FORCE_SCRIPT_NAME + MEDIA_SUFFIX
 
 ALLOWED_HOSTS = [
     'containers.computing.dcu.ie',
+    '127.0.0.1'
 ]
 
 AUTH_USER_MODEL = 'authentication.User' 
@@ -62,7 +84,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'youtube.urls'
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 TEMPLATES = [
     {
@@ -129,10 +150,3 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_SUFFIX = '/static/'
-STATIC_URL = FORCE_SCRIPT_NAME + STATIC_SUFFIX
-
-MEDIA_SUFFIX = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = FORCE_SCRIPT_NAME + MEDIA_SUFFIX
